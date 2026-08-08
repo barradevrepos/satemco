@@ -109,3 +109,50 @@ cd /var/www/html
 php artisan migrate
 ```
 
+#### Crear usuario
+
+crar 'admin'
+
+```
+php artisan make:filament-user
+```
+
+#### Añadir columna role a users
+
+```
+php artisan make:migration add_role_to_users_table --table=users
+```
+
+Archivo de migración recién creado y, dentro de `up()`:
+
+```php
+$table->string('role')->nullable();
+```
+
+Debe quedar dentro de:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->string('role')->nullable();
+});
+```
+
+Ejecutar la migración:
+
+```bash
+php artisan migrate
+```
+
+Eso crea la columna `role` en la tabla `users`.
+
+**Roles**
+
+- admin
+- user
+- guest
+
+#### Asignar rol a admin
+
+```php
+php artisan tinker --execute="App\Models\User::where('name', 'admin')->update(['role' => 'admin']);"
+```
